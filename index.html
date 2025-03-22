@@ -122,7 +122,7 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
     
     if (kodeAwal === kodeRahasia) {
         let kodeNama = kodeArray.slice(4).join(' ');
-        let nama = kodeNama ? dekripsi(kodeNama) : "Pengguna";
+        let nama = kodeNama ? dekripsi(kodeNama) : " ";
         localStorage.setItem("namaPengguna", nama);
         return true;
     }
