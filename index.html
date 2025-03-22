@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kode Rahasia Translator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script>
+const kodeRahasia = {
+    'A': "+×-×+", 'B': "+÷-÷+", 'C': "÷÷+÷÷", 'D': "+××÷÷", 'E': "-+-+-",
+    'F': "+--++", 'G': "÷+÷+-", 'H': "++-++", 'I': "+++++", 'J': "++÷-÷",
+    'K': "+×+×+", 'L': "+++--", 'M': "+×××+", 'N': "+××++", 'O': "÷÷÷÷÷",
+    'P': "+÷+×÷", 'Q': "÷÷÷÷×", 'R': "+÷×+×", 'S': "÷÷×÷÷", 'T': "--+++",
+    'U': "+÷÷÷+", 'V': "××+÷×", 'W': "××-×÷", 'X': "×××××", 'Y': "××++÷",
+    'Z': "-×××-", '0': "÷+÷+÷", '1': "×++++", '2': "÷÷×--", '3': "÷×+×÷",
+    '4': "×-+-+", '5': "-+×××", '6': "×÷÷÷÷", '7': "--×××", '8': "÷×××÷",
+    '9': "÷÷÷÷×",
+
+    '!': "+÷×÷+", '?': "÷×÷+÷", '@': "×÷+÷×", '#': "+×+×-", '&': "÷×÷×÷",
+    '$': "÷+×-÷", '%': "×÷-÷×", '^': "×+÷×+", '*': "×÷×-×", '(': "÷-÷++",
+    ')': "++÷-÷", '-': "-×-×-", '_': "-÷+÷-", '=': "+×÷×+", '+': "+÷-×+",
+    '/': "×-×--", '\\': "--×-×", '[': "÷-+--", ']': "--+-÷", '{': "÷×-+×",
+    '}': "×+÷-×", ':': "+÷-+÷", ';': "+÷+×-", '"': "×--×-", "'": "×÷--×",
+    '<': "÷+-×-", '>': "+-×-÷", ',': "--÷×-", '.': "+×÷-+", ' ': " " // Spasi tetap spasi
+};
+
+const kodeTerbalik = Object.fromEntries(
+    Object.entries(kodeRahasia).map(([key, value]) => [value, key])
+);
+
+function enkripsi(teks) {
+    return teks.toUpperCase()
+        .split('')
+        .map(char => kodeRahasia[char] || char)
+        .join(' '); // Gunakan spasi tunggal untuk pemisahan kode
+}
+
+function dekripsi(kode) {
+    return kode
+        .split('  ') // Pisahkan menggunakan dua spasi (deteksi kata)
+        .map(kata => kata.split(' ').map(symbol => kodeTerbalik[symbol] || '').join(''))
+        .join(' '); // Gabungkan kata dengan satu spasi
+}
+
+function reverseText() {
+    var inputField = document.getElementById("1");
+    var outputField = document.getElementById("0");
+    var inputLabel = document.getElementById("inputLabel");
+    var outputLabel = document.getElementById("outputLabel");
+
+    inputField.id = "temp";
+    outputField.id = "0";
+    inputField.id = "1";
+
+    var tempLabel = inputLabel.innerText;
+    inputLabel.innerText = outputLabel.innerText;
+    outputLabel.innerText = tempLabel;
+    
+    document.getElementById("1").removeAttribute("readonly");
+    document.getElementById("0").setAttribute("readonly", "true");
+    
+    document.getElementById("1").value = "";
+    document.getElementById("0").value = "";
+}
+
+function proses() {
+    const inputElement = document.getElementById("1");
+    const outputElement = document.getElementById("0");
+    const inputText = inputElement.value.trim();
+
+    if (inputText === "") {
+        outputElement.value = "";
+        return;
+    }
+
+    const isKodeMode = document.getElementById("inputLabel").innerText === "Kode Rahasia";
+    let hasil;
+
+    if (isKodeMode) {
+        hasil = dekripsi(inputText);
+
+        // Jika hasilnya kosong atau hanya spasi, tampilkan "Kesalahan"
+        if (!hasil.trim()) {
+            outputElement.value = "Kesalahan";
+        } else {
+            outputElement.value = hasil;
+        }
+
+        // Cek kode rahasia, jika benar langsung pindah halaman
+        if (cekKodeRahasiaDanSimpan(inputText)) {
+            setTimeout(() => {
+                window.location.href = "flower.html"; // Ganti dengan halaman yang diinginkan
+            }, 500);
+        }
+    } else {
+        hasil = enkripsi(inputText);
+        outputElement.value = hasil;
+    }
+}
+
+// Menghapus indikator "Kesalahan" saat pengguna mengubah input
+document.getElementById("1").addEventListener("input", function () {
+    const outputElement = document.getElementById("0");
+    if (outputElement.value === "Kesalahan") {
+        outputElement.value = "";
+    }
+});
+
+function copyText(elementId) {
+    var copyText = document.getElementById(elementId);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+}
+
+function cekKodeRahasiaDanSimpan(kodeInput) {
+    const kodeRahasia = "+++-- ÷÷÷÷÷ ××+÷× -+-+-";
+
+    let kodeArray = kodeInput.trim().split(' ');
+    let kodeAwal = kodeArray.slice(0, 4).join(' '); 
+    
+    if (kodeAwal === kodeRahasia) {
+        let kodeNama = kodeArray.slice(4).join(' ');
+        let nama = kodeNama ? dekripsi(kodeNama) : "Pengguna";
+        localStorage.setItem("namaPengguna", nama);
+        return true;
+    }
+    return false;
+}
+
+</script>
+
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center py-4">
+            <i class="fas fa-bars text-xl"></i>
+            <h1 class="text-xl font-semibold">Kode Rahasia Translator</h1>
+            <i class="fas fa-info-circle text-xl"></i>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+            <div class="flex justify-between items-center mb-2">
+                <h2 id="inputLabel" class="text-lg font-semibold">Kode Rahasia</h2>
+                <i class="fas fa-exchange-alt text-xl cursor-pointer" onclick="reverseText()"></i>
+            </div>
+            <textarea id="1" class="w-full h-24 p-2 border rounded-lg mb-2"></textarea>
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="proses()">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Konversi</span>
+                </div>
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="copyText('1')">
+                    <i class="fas fa-copy"></i>
+                    <span>Salin</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <div class="flex justify-between items-center mb-2">
+                <h2 id="outputLabel" class="text-lg font-semibold">Teks</h2>
+                <i class="fas fa-cogs text-xl"></i>
+            </div>
+            <textarea id="0" class="w-full h-24 p-2 border rounded-lg mb-2" readonly></textarea>
+            <div class="flex justify-end items-center">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="copyText('0')">
+                    <i class="fas fa-copy"></i>
+                    <span>Salin</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
