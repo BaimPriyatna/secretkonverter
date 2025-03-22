@@ -102,7 +102,7 @@ function proses() {
 // Menghapus indikator "Kesalahan" saat pengguna mengubah input
 document.getElementById("1").addEventListener("input", function () {
     const outputElement = document.getElementById("0");
-    if (outputElement.value === "Kesalahan") {
+    if (outputElement.value === "Error") {
         outputElement.value = "";
     }
 });
@@ -137,38 +137,38 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
         <div class="flex justify-between items-center py-4">
           <div class="flex items-center space-x-2 cursor-pointer" onclick="openPopup('popupKamus')">
             <i class="fas fa-book text-xl"></i></div>
-            <h1 class="text-xl font-semibold">Kode Rahasia Translator</h1>
+            <h1 class="text-xl font-semibold">Secret Code Translator</h1>
           <div class="flex items-center space-x-2 cursor-pointer" onclick="openPopup('popupInfo')">
             <i class="fas fa-info-circle text-xl"></i></div>
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow-md mb-4">
             <div class="flex justify-between items-center mb-2">
-                <h2 id="inputLabel" class="text-lg font-semibold">Kode Rahasia</h2>
+                <h2 id="inputLabel" class="text-lg font-semibold">Code</h2>
                 <i class="fas fa-exchange-alt text-xl cursor-pointer" onclick="reverseText()"></i>
             </div>
             <textarea id="1" class="w-full h-24 p-2 border rounded-lg mb-2"></textarea>
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2 cursor-pointer" onclick="proses()">
                     <i class="fas fa-sync-alt"></i>
-                    <span>Konversi</span>
+                    <span>Konvert</span>
                 </div>
                 <div class="flex items-center space-x-2 cursor-pointer" onclick="copyText('1')">
                     <i class="fas fa-copy"></i>
-                    <span>Salin</span>
+                    <span>Copy</span>
                 </div>
             </div>
         </div>
 
         <div class="bg-white p-4 rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-2">
-                <h2 id="outputLabel" class="text-lg font-semibold">Teks</h2>
+                <h2 id="outputLabel" class="text-lg font-semibold">Text</h2>
             </div>
             <textarea id="0" class="w-full h-24 p-2 border rounded-lg mb-2" readonly></textarea>
             <div class="flex justify-end items-center">
                 <div class="flex items-center space-x-2 cursor-pointer" onclick="copyText('0')">
                     <i class="fas fa-copy"></i>
-                    <span>Salin</span>
+                    <span>Copy</span>
                 </div>
             </div>
         </div>
@@ -179,11 +179,11 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
         <button onclick="tutupPopup('popupKamus')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
             <i class="fas fa-times text-xl"></i>
         </button>
-        <h2 class="text-xl font-semibold mb-4">Kamus Kode Rahasia</h2>
-        <p>Berikut adalah beberapa kode yang digunakan:</p>
+        <h2 class="text-xl font-semibold mb-4">Secret code dictionary</h2>
+        <p>Here are some of the codes used:</p>
         <ul id="kamusList" class="mt-2 text-sm">
 <ul>
-    <li><strong>Huruf</strong></li>
+    <li><strong>Letter</strong></li>
     <li>A → +×-×+ | B → +÷-÷+ | C → ÷÷+÷÷ | D → +××÷÷ | E → -+-+-</li>
     <li>F → +--++ | G → ÷+÷+- | H → ++-++ | I → +++++ | J → ++÷-÷</li>
     <li>K → +×+×+ | L → +++-- | M → +×××+ | N → +××++ | O → ÷÷÷÷÷</li>
@@ -193,13 +193,13 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
 </ul>
 
 <ul>
-    <li><strong>Angka</strong></li>
+    <li><strong>Number</strong></li>
     <li>0 → ÷+÷+÷ | 1 → ×++++ | 2 → ÷÷×-- | 3 → ÷×+×÷ | 4 → ×-+-+</li>
     <li>5 → -+××× | 6 → ×÷÷÷÷ | 7 → --××× | 8 → ÷×××÷ | 9 → ÷÷÷÷×</li>
 </ul>
 
 <ul>
-    <li><strong>Simbol</strong></li>
+    <li><strong>Symbol</strong></li>
     <li>! → +÷×÷+ | ? → ÷×÷+÷ | @ → ×÷+÷× | # → +×+×- | & → ÷×÷×÷</li>
     <li>$ → ÷+×-÷ | % → ×÷-÷× | ^ → ×+÷×+ | * → ×÷×-× | ( → ÷-÷++</li>
     <li>) → ++÷-÷ | - → -×-×- | _ → -÷+÷- | = → +×÷×+ | + → +÷-×+</li>
@@ -216,13 +216,13 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
         <button onclick="tutupPopup('popupInfo')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
             <i class="fas fa-times text-xl"></i>
         </button>
-        <h2 class="text-xl font-semibold mb-3">Tentang Kode Rahasia</h2>
-        <p>Translator ini dibuat untuk mengenkripsi dan mendekripsi kode rahasia berdasarkan simbol tertentu.                       </p>
+        <h2 class="text-xl font-semibold mb-3">Information</h2>
+        <p>This translator is made to encrypt and decrypt secret codes based on certain symbols</p>
         <p></p>
         <h2 class="text-xl font-semibold mb-3">Love For Someone</h2>
-        <li>Enkripsikan teks tersebut "LOVE NAMA"</li>
-        <li>Ganti "NAMA" dengan nama yang anda inginkan</li>
-        <li>Lalu Dekripsikan kode yang dihasilkan, maka anda akan dibawa ke halaman rahasia</li>
+        <li>Encrypt text: "LOVE NAME"</li>
+        <li>Replace "NAME" with the name you want</li>
+        <li>Then decrypt the generated code, then you will be taken to a secret page</li>
     </div>
 </div>
 <script>
