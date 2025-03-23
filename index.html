@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode Rahasia Translator</title>
+    <title>Secret Code Translator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script>
-const kodeRahasia = {
+const secretCode = {
     'A': "+×-×+", 'B': "+÷-÷+", 'C': "÷÷+÷÷", 'D': "+××÷÷", 'E': "-+-+-",
     'F': "+--++", 'G': "÷+÷+-", 'H': "++-++", 'I': "+++++", 'J': "++÷-÷",
     'K': "+×+×+", 'L': "+++--", 'M': "+×××+", 'N': "+××++", 'O': "÷÷÷÷÷",
@@ -22,25 +22,25 @@ const kodeRahasia = {
     ')': "++÷-÷", '-': "-×-×-", '_': "-÷+÷-", '=': "+×÷×+", '+': "+÷-×+",
     '/': "×-×--", '\\': "--×-×", '[': "÷-+--", ']': "--+-÷", '{': "÷×-+×",
     '}': "×+÷-×", ':': "+÷-+÷", ';': "+÷+×-", '"': "×--×-", "'": "×÷--×",
-    '<': "÷+-×-", '>': "+-×-÷", ',': "--÷×-", '.': "+×÷-+", ' ': " " // Spasi tetap spasi
+    '<': "÷+-×-", '>': "+-×-÷", ',': "--÷×-", '.': "+×÷-+", ' ': " " // Space remains space
 };
 
-const kodeTerbalik = Object.fromEntries(
-    Object.entries(kodeRahasia).map(([key, value]) => [value, key])
+const reversedCode = Object.fromEntries(
+    Object.entries(secretCode).map(([key, value]) => [value, key])
 );
 
-function enkripsi(teks) {
-    return teks.toUpperCase()
+function encrypt(text) {
+    return text.toUpperCase()
         .split('')
-        .map(char => kodeRahasia[char] || char)
-        .join(' '); // Gunakan spasi tunggal untuk pemisahan kode
+        .map(char => secretCode[char] || char)
+        .join(' '); // Use single space for code separation
 }
 
-function dekripsi(kode) {
-    return kode
-        .split('  ') // Pisahkan menggunakan dua spasi (deteksi kata)
-        .map(kata => kata.split(' ').map(symbol => kodeTerbalik[symbol] || '').join(''))
-        .join(' '); // Gabungkan kata dengan satu spasi
+function decrypt(code) {
+    return code
+        .split('  ') // Split using two spaces (detect words)
+        .map(word => word.split(' ').map(symbol => reversedCode[symbol] || '').join(''))
+        .join(' '); // Join words with a single space
 }
 
 function reverseText() {
@@ -64,7 +64,7 @@ function reverseText() {
     document.getElementById("0").value = "";
 }
 
-function proses() {
+function process() {
     const inputElement = document.getElementById("1");
     const outputElement = document.getElementById("0");
     const inputText = inputElement.value.trim();
@@ -74,32 +74,32 @@ function proses() {
         return;
     }
 
-    const isKodeMode = document.getElementById("inputLabel").innerText === "Kode Rahasia";
-    let hasil;
+    const isCodeMode = document.getElementById("inputLabel").innerText === "Secret Code";
+    let result;
 
-    if (isKodeMode) {
-        hasil = dekripsi(inputText);
+    if (isCodeMode) {
+        result = decrypt(inputText);
 
-        // Jika hasilnya kosong atau hanya spasi, tampilkan "Kesalahan"
-        if (!hasil.trim()) {
-            outputElement.value = "Kesalahan";
+        // If the result is empty or just spaces, display "Error"
+        if (!result.trim()) {
+            outputElement.value = "Error";
         } else {
-            outputElement.value = hasil;
+            outputElement.value = result;
         }
 
-        // Cek kode rahasia, jika benar langsung pindah halaman
-        if (cekKodeRahasiaDanSimpan(inputText)) {
+        // Check secret code, if correct redirect to another page
+        if (checkSecretCodeAndSave(inputText)) {
             setTimeout(() => {
-                window.location.href = "flower.html"; // Ganti dengan halaman yang diinginkan
+                window.location.href = "flower.html"; // Change to the desired page
             }, 500);
         }
     } else {
-        hasil = enkripsi(inputText);
-        outputElement.value = hasil;
+        result = encrypt(inputText);
+        outputElement.value = result;
     }
 }
 
-// Menghapus indikator "Kesalahan" saat pengguna mengubah input
+// Remove "Error" indicator when user changes input
 document.getElementById("1").addEventListener("input", function () {
     const outputElement = document.getElementById("0");
     if (outputElement.value === "Error") {
@@ -114,16 +114,16 @@ function copyText(elementId) {
     document.execCommand("copy");
 }
 
-function cekKodeRahasiaDanSimpan(kodeInput) {
-    const kodeRahasia = "+++-- ÷÷÷÷÷ ××+÷× -+-+-";
+function checkSecretCodeAndSave(codeInput) {
+    const secretCode = "+++-- ÷÷÷÷÷ ××+÷× -+-+-";
 
-    let kodeArray = kodeInput.trim().split(' ');
-    let kodeAwal = kodeArray.slice(0, 4).join(' '); 
+    let codeArray = codeInput.trim().split(' ');
+    let initialCode = codeArray.slice(0, 4).join(' '); 
     
-    if (kodeAwal === kodeRahasia) {
-        let kodeNama = kodeArray.slice(4).join(' ');
-        let nama = kodeNama ? dekripsi(kodeNama) : " ";
-        localStorage.setItem("namaPengguna", nama);
+    if (initialCode === secretCode) {
+        let userNameCode = codeArray.slice(4).join(' ');
+        let name = userNameCode ? decrypt(userNameCode) : "User ";
+        localStorage.setItem("userName", name);
         return true;
     }
     return false;
@@ -135,7 +135,7 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
 <body class="bg-gray-100 text-gray-900">
     <div class="container mx-auto p-4">
         <div class="flex justify-between items-center py-4">
-          <div class="flex items-center space-x-2 cursor-pointer" onclick="openPopup('popupKamus')">
+          <div class="flex items-center space-x-2 cursor-pointer" onclick="openPopup('popupDictionary')">
             <i class="fas fa-book text-xl"></i></div>
             <h1 class="text-xl font-semibold">Secret Code Translator</h1>
           <div class="flex items-center space-x-2 cursor-pointer" onclick="openPopup('popupInfo')">
@@ -144,14 +144,14 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
 
         <div class="bg-white p-4 rounded-lg shadow-md mb-4">
             <div class="flex justify-between items-center mb-2">
-                <h2 id="inputLabel" class="text-lg font-semibold">Code</h2>
+                <h2 id="inputLabel" class="text-lg font-semibold">Secret Code</h2>
                 <i class="fas fa-exchange-alt text-xl cursor-pointer" onclick="reverseText()"></i>
             </div>
             <textarea id="1" class="w-full h-24 p-2 border rounded-lg mb-2"></textarea>
             <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2 cursor-pointer" onclick="proses()">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="process()">
                     <i class="fas fa-sync-alt"></i>
-                    <span>Konvert</span>
+                    <span>Convert</span>
                 </div>
                 <div class="flex items-center space-x-2 cursor-pointer" onclick="copyText('1')">
                     <i class="fas fa-copy"></i>
@@ -173,17 +173,17 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
             </div>
         </div>
     </div>
-  <!-- Popup Kamus -->
-<div id="popupKamus" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+  <!-- Dictionary Popup -->
+<div id="popupDictionary" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
-        <button onclick="tutupPopup('popupKamus')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
+        <button onclick="closePopup('popupDictionary')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
             <i class="fas fa-times text-xl"></i>
         </button>
-        <h2 class="text-xl font-semibold mb-4">Secret code dictionary</h2>
-        <p>Here are some of the codes used:</p>
-        <ul id="kamusList" class="mt-2 text-sm">
+        <h2 class="text-xl font-semibold mb-4">Secret Code Dictionary</h2>
+        <p>Here are some codes used:</p>
+        <ul id="dictionaryList" class="mt-2 text-sm">
 <ul>
-    <li><strong>Letter</strong></li>
+    <li><strong>Letters</strong></li>
     <li>A → +×-×+ | B → +÷-÷+ | C → ÷÷+÷÷ | D → +××÷÷ | E → -+-+-</li>
     <li>F → +--++ | G → ÷+÷+- | H → ++-++ | I → +++++ | J → ++÷-÷</li>
     <li>K → +×+×+ | L → +++-- | M → +×××+ | N → +××++ | O → ÷÷÷÷÷</li>
@@ -193,13 +193,13 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
 </ul>
 
 <ul>
-    <li><strong>Number</strong></li>
+    <li><strong>Numbers</strong></li>
     <li>0 → ÷+÷+÷ | 1 → ×++++ | 2 → ÷÷×-- | 3 → ÷×+×÷ | 4 → ×-+-+</li>
     <li>5 → -+××× | 6 → ×÷÷÷÷ | 7 → --××× | 8 → ÷×××÷ | 9 → ÷÷÷÷×</li>
 </ul>
 
 <ul>
-    <li><strong>Symbol</strong></li>
+    <li><strong>Symbols</strong></li>
     <li>! → +÷×÷+ | ? → ÷×÷+÷ | @ → ×÷+÷× | # → +×+×- | & → ÷×÷×÷</li>
     <li>$ → ÷+×-÷ | % → ×÷-÷× | ^ → ×+÷×+ | * → ×÷×-× | ( → ÷-÷++</li>
     <li>) → ++÷-÷ | - → -×-×- | _ → -÷+÷- | = → +×÷×+ | + → +÷-×+</li>
@@ -210,19 +210,19 @@ function cekKodeRahasiaDanSimpan(kodeInput) {
     </div>
 </div>
 
-<!-- Popup Info -->
+<!-- Info Popup -->
 <div id="popupInfo" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
-        <button onclick="tutupPopup('popupInfo')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
+        <button onclick="closePopup('popupInfo')" class="absolute top-2 right-2 text-gray-600 hover:text-red-500">
             <i class="fas fa-times text-xl"></i>
         </button>
-        <h2 class="text-xl font-semibold mb-3">Information</h2>
-        <p>This translator is made to encrypt and decrypt secret codes based on certain symbols</p>
+        <h2 class="text-xl font-semibold mb-3">About Secret Code</h2>
+        <p>This translator is created to encrypt and decrypt secret codes based on certain symbols.</p>
         <p></p>
         <h2 class="text-xl font-semibold mb-3">Love For Someone</h2>
-        <li>Encrypt text: "LOVE NAME"</li>
+        <li>Encrypt the text "LOVE NAME"</li>
         <li>Replace "NAME" with the name you want</li>
-        <li>Then decrypt the generated code, then you will be taken to a secret page</li>
+        <li>Then decrypt the resulting code, and you will be taken to a secret page</li>
     </div>
 </div>
 <script>
@@ -230,7 +230,7 @@ function openPopup(id) {
     document.getElementById(id).classList.remove('hidden');
 }
 
-function tutupPopup(id) {
+function closePopup(id) {
     document.getElementById(id).classList.add('hidden');
 }
  
